@@ -1,58 +1,72 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using UnityEditor;
 using UnityEngine;
 
-public class Inventory
+public class Inventory: MonoBehaviour
 {
-    public int[] RawAmounts = new int[2];
-    public float[] RawEfficiencies = new float[2];
+    public static int numOfRaw = 2;
+    public static int numOfProduction = 2;
 
-    public int RobotAmount;
-    public float RobotEfficiency;
+    public int[] rawAmounts;
+    public float[] rawEfficiencies;
 
-    public float[] ProductionEfficiencies = new float[2];
+    public int robotAmount;
+    public float robotEfficiency;
+
+    public float[] productionEfficiencies;
 
     private Robot _bufferedRobot;
 
-    public int Score;
+    public int score;
 
     // singleton
-    private Inventory() {}
-    private static class SingletonInstance
-    {
-        public static readonly Inventory Instance = new Inventory();  // TODO: readonly
+    private static Inventory _instance;
+    public static Inventory GetInventory() {
+        return _instance;
     }
 
-    public static Inventory GetInventory()
-    {
-        return SingletonInstance.Instance;
-    }
     
     public Robot FetchBufferedRobot()
     {
         if (_bufferedRobot == null) return null;
         
         Robot ret = _bufferedRobot;
-        if (RobotAmount > 0)
+        if (robotAmount > 0)
         {
             // TODO
             // _bufferedRobot = 
-            --RobotAmount;
+            --robotAmount;
         }
 
         return ret;
     }
-    
-    // Start is called before the first frame update
-    void Start()
+
+    protected virtual void Awake()
     {
-        
+        _instance = this;
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        rawAmounts = new int[numOfRaw];
+        rawEfficiencies = new float[numOfRaw];
+        productionEfficiencies = new float[numOfProduction];
+    }
+
+    private float t = 0;
     void Update()
     {
-        
+        t += Time.deltaTime;
+        if (t >= 5)
+        {
+            t = 0;
+            Debug.LogFormat("Inventory:\n" +
+                            "   RawAmounts: {0}, {1}\n" +
+                            "   RawEfficiencies: {2}, {3}\n",
+                rawAmounts[0], rawAmounts[1], rawEfficiencies[0], rawEfficiencies[1]);
+        }
     }
 }

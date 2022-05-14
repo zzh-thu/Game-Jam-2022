@@ -11,44 +11,105 @@ public class WorkArea : MonoBehaviour
         Production
     }
 
-    private float _efficiency;
-    private bool _isWorking = false;
-    private float _progress;
-    
-    public float neededProgress;
-    public int[] neededRaw = new int[2]; // not used in WorkType == Raw
-    public WorkType workType;
-    public int workTypeNumber;  // not used in WorkType == Robot
-    public int price;  // only used in WorkType == Production
-    public bool isTurnedOn = true;
+    // robots
+    public int xNum;
+    public int yNum;
+    private Robot[][] _robots;
 
-    public void RemoveRobot(Robot robot)
+    // state
+    private float _efficiency;
+    private bool _isWorking;
+    private float _progress;
+    public bool isTurnedOn;
+
+    // attributes
+    public float neededProgress;
+    public int[] inputRaw; // not used in WorkType == Raw
+    public WorkType workType;
+    public int workTypeNumber;
+    // public int[] outputNum = new int[Inventory.NumOfProduction];  // not used in WorkType == Robot, TODO
+    public int price;  // only used in WorkType == Production
+
+    private void _InformEfficiency()
     {
-        // TODO: buff of robots
         var inventory = Inventory.GetInventory();
         switch (workType)
         {
             case WorkType.Raw:
+                inventory.rawEfficiencies[workTypeNumber] = _efficiency;
+                break;
+            case WorkType.Robot:
+                inventory.robotEfficiency = _efficiency;
+                break;
+            case WorkType.Production:
+                inventory.productionEfficiencies[workTypeNumber] = _efficiency;
+                break;
+        }
+    }
+
+    private void _UpdateRobotsStates()
+    {
+        for (int i = 0; i < xNum; ++i)  // reset debuff num to 0
+        {
+            for (int j = 0; j < yNum; ++j)
+            {
+                _robots[i][j].debuffNum = 0;
+            }
+        }
+
+        for (int i = 0; i < xNum; ++i)  // calculate debuff num
+        {
+            for (int j = 0; j < yNum; ++j)
+            {
+                if (_robots[i][j].patience <= 0)  // if runs out of patience
+                {
+                    for (int m = -1; m <= 1; ++m)
+                    {
+                        for (int n = -1; n <= 1; ++n)
+                        {
+                            // get all robots around it
+                            int ii = i + m, jj = j + n;
+                            if (0 <= ii && ii < xNum && 0 <= jj && jj < yNum && (ii != i || jj != j))
+                            {
+                                ++_robots[ii][jj].debuffNum;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        _efficiency = 0;
+        for (int i = 0; i < xNum; ++i)  // calculate the efficiency
+        {
+            for (int j = 0; j < yNum; ++j)
+            {
+                _efficiency += _robots[i][j].GetEfficiency();
+            }
+        }
+    }
+    
+    public void RemoveRobot(Robot robot)
+    {
+        // TODO: buff of robots
+        switch (workType)
+        {
+            case WorkType.Raw:
                 _efficiency -= robot.rawEfficiencies[workTypeNumber];
-                inventory.RawEfficiencies[workTypeNumber] = _efficiency;
                 break;
             case WorkType.Robot:
                 _efficiency -= robot.robotEfficiency;
-                inventory.RobotEfficiency = _efficiency;
                 break;
             case WorkType.Production:
                 _efficiency -= robot.productionEfficiencies[workTypeNumber];
-                inventory.ProductionEfficiencies[workTypeNumber] = _efficiency;
                 break;
         }
-        
+        _InformEfficiency();
     }
 
     public void PutRobot(int x, int y)
     {
         var robot = Inventory.GetInventory().FetchBufferedRobot();
-        robot.x = x;
-        robot.y = y;
         // TODO: buff of robots
         switch (workType)
         {
@@ -62,6 +123,23 @@ public class WorkArea : MonoBehaviour
                 _efficiency += robot.productionEfficiencies[workTypeNumber];
                 break;
         }
+        _InformEfficiency();
+    }
+
+    public Robot FindRecycledAgent(int x, int y)
+    {
+        // TODO
+        // find by distance
+        // set its state
+        // navigate it to (x, y)
+    }
+
+    public void ReleaseRecycledAgent(Robot recycledRobot)
+    {
+        // TODO:
+        // navigate agent to (x, y)
+        // set its state
+        // release recycledRobot
     }
 
     public void TurnOnOrOff()
@@ -72,15 +150,11 @@ public class WorkArea : MonoBehaviour
     private void _TryProduce()
     {
         var inventory = Inventory.GetInventory();
-        for (int i = 0; i < neededRaw.Length; ++i)  // check whether each raw materials is enough
-        {
-            if (inventory.RawAmounts[i] < neededRaw[i]) return;
-        }
+        for (int i = 0; i < inputRaw.Length; ++i)  // check whether each raw materials is enough
+            if (inventory.rawAmounts[i] < inputRaw[i]) return;
 
-        for (int i = 0; i < neededRaw.Length; ++i)  // deduct materials from inventory
-        {
-            inventory.RawAmounts[i] -= neededRaw[i];
-        }
+        for (int i = 0; i < inputRaw.Length; ++i)  // deduct materials from inventory
+            inventory.rawAmounts[i] -= inputRaw[i];
 
         _isWorking = true;
     }
@@ -89,7 +163,14 @@ public class WorkArea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // TODO: buff of robots
+        // TODO: initiate
+        _robots = new Robot[][xNum];
+        for (int i = 0; i < xNum; ++i)
+            _robots[i] = new Robot[yNum];
+        inputRaw = new int[Inventory.numOfRaw];
+        isTurnedOn = true;
+
+        // TODO
         foreach (var robot in GetComponentsInChildren<Robot>())  // calculate the initial efficiency
         {
             switch (workType)
@@ -105,12 +186,26 @@ public class WorkArea : MonoBehaviour
                     break;
             }
         }
+        _InformEfficiency();
     }
 
-    // Update is called once per frame
+    private float t = 0f;
     void Update()
     {
+        t += Time.deltaTime;
+        if (t >= 4)
+        {
+            t = 0;
+            Debug.LogFormat("WorkArea:" +
+                            "   _efficiency: {0}\n" +
+                            "   _isWorking: {1}\n" +
+                            "   _progress: {2}\n",
+                _efficiency, _isWorking, _progress);
+        }
+        
         if (!isTurnedOn) return;
+        
+        _UpdateRobotsStates();
         
         if (_isWorking)
         {
@@ -122,13 +217,13 @@ public class WorkArea : MonoBehaviour
             switch (workType)
             {
                 case WorkType.Raw:
-                    inventory.RawAmounts[workTypeNumber] += 1;
+                    inventory.rawAmounts[workTypeNumber] += 1;
                     break;
                 case WorkType.Robot:
-                    inventory.RobotAmount += 1;
+                    inventory.robotAmount += 1;
                     break;
                 case WorkType.Production:
-                    inventory.Score += price;
+                    inventory.score += price;
                     break;
             }
             _progress = 0;  // change the state to idle

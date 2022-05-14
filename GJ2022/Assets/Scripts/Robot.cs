@@ -1,37 +1,104 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Robot : MonoBehaviour
 {
     public int x, y;
-    public float[] rawEfficiencies = new float[2];
-    public float robotEfficiency;
-    public float[] productionEfficiencies = new float[2];
-    public int patient;
-    public int price;
-        
-    public Robot()
+    public enum RobotState
     {
-        // TODO: fill in number
-        for (int i = 0; i < rawEfficiencies.Length; ++i)
-            rawEfficiencies[i] = Random.Range(0f, 1f);
-        robotEfficiency = Random.Range(0f, 1f);
-        for (int i = 0; i < rawEfficiencies.Length; ++i)
-            productionEfficiencies[i] = Random.Range(0f, 1f);
-        patient = Random.Range(50, 100);
-        price = 0; // TODO: calculate the price
+        Active,
+        Sleepy,
+        MovingToRecycle,
+        MovingFromRecycle,
+        Recycled,
+        Recycling
     }
     
-    // Start is called before the first frame update
+    // efficiency
+    public float[] rawEfficiencies;
+    public float robotEfficiency;
+    public float[] productionEfficiencies;
+    private float _efficiency;
+    
+    public float recycledProgress;
+    public float recycledProgressNeeded;
+    public Robot recycledAgent;
+    
+    public int price;
+
+    public RobotState state;
+    public float patience;
+    public int debuffNum;
+    private WorkArea _workArea;
+    
+    public void Bind(WorkArea workArea)
+    {
+        int workTypeNumber = workArea.workTypeNumber;
+        switch (workArea.workType)
+        {
+            case WorkArea.WorkType.Raw:
+                _efficiency = rawEfficiencies[workTypeNumber];
+                break;
+            case WorkArea.WorkType.Robot:
+                _efficiency = robotEfficiency;
+                break;
+            case WorkArea.WorkType.Production:
+                _efficiency = productionEfficiencies[workTypeNumber];
+                break;
+        }
+    }
+    
+    public float GetEfficiency()
+    {
+        if (patience <= 0) return 0;
+        return _efficiency;
+    }
+    
     void Start()
     {
+        // initiate
+        rawEfficiencies = new float[Inventory.numOfRaw];
+        productionEfficiencies = new float[Inventory.numOfProduction];
         
+        // TODO: fill in number
+        for (int i = 0; i < Inventory.numOfRaw; ++i)
+            rawEfficiencies[i] = 0.2f;
+        robotEfficiency = 0.2f;
+        for (int i = 0; i < Inventory.numOfProduction; ++i)
+            productionEfficiencies[i] = 0.2f;
+        patience = 100f;
+        price = 0; // TODO: calculate the price
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // check the patient of robot
+        switch (state)
+        {
+            case RobotState.Active:
+                patience -= Time.deltaTime * (1 + debuffNum);
+                if (patience <= 0) state = RobotState.Sleepy;
+                recycledAgent = _workArea.FindRecycledAgent(x, y);
+                break;
+            case RobotState.Sleepy:
+                break;
+            case RobotState.MovingToRecycle:
+                // TODO
+                break;
+            case RobotState.MovingFromRecycle:
+                // TODO
+                break;
+            case RobotState.Recycled:
+                if (recycledAgent.state == RobotState.Recycling)
+                {
+                    recycledProgress += recycledAgent.robotEfficiency;
+                    if (recycledProgress >= recycledProgressNeeded)
+                        _workArea.ReleaseRecycledAgent(recycledAgent);
+                }
+                break;
+            case RobotState.Recycling:
+                break;
+        }
     }
 }
