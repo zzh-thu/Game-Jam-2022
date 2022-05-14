@@ -441,6 +441,7 @@ MonoBehaviour:
   IsClick: 0
   CurrentRobot: {fileID: 0}
   UIposition: {fileID: 0}
+  GUIpos4Robot: {x: 700, y: 50}
 --- !u!114 &1241451920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,7 +470,6 @@ GameObject:
   - component: {fileID: 1483798189}
   - component: {fileID: 1483798188}
   - component: {fileID: 1483798187}
-  - component: {fileID: 1483798186}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -477,21 +477,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1483798186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483798185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 309e58f2c2e8c7a4493c2b8f9760ad5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsClick: 0
-  CurrentRobot: {fileID: 0}
-  UIposition: {fileID: 0}
 --- !u!64 &1483798187
 MeshCollider:
   m_ObjectHideFlags: 0

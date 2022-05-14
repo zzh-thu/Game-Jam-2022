@@ -10,16 +10,19 @@ public class DragTheRobot2Space : MonoBehaviour
 
     public GameObject CurrentRobot;
     public RectTransform UIposition;
+    public Vector2 GUIpos4Robot = new Vector2(700, 50);
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Vector2 GuiPos = GUIUtility.GUIToScreenPoint(GUIpos4Robot);
+        transform.position = Camera.main.ScreenToWorldPoint(new Vector3(GuiPos.x, GuiPos.y, transform.position.z));
     }
 
     // Update is called once per frame
     void Update()
     {
+
 
         if (Input.GetMouseButtonDown(0) && !IsClick)
         {
