@@ -13,6 +13,11 @@ public class BasePanel
     /// <value></value>
     public UIType UIType { get; private set; }
 
+    public BasePanel(UIType uIType)
+    {
+        UIType = uIType;
+    }
+
     /// <summary>
     /// UI进入时执行的操作，只会执行一次
     /// </summary>
