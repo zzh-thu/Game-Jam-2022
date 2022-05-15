@@ -8,10 +8,16 @@ namespace FactoryFramework
 
     public class IPathTester : MonoBehaviour
     {
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
         public Vector3 start = Vector3.zero;
         public Vector3 end = Vector3.forward;
         public Vector3 startdir = Vector3.forward;
         public Vector3 enddir = Vector3.forward;
+
         public IPath p;
         public GlobalLogisticsSettings.PathSolveType pt = GlobalLogisticsSettings.PathSolveType.SPLINE;
 
@@ -28,8 +34,8 @@ namespace FactoryFramework
 
         public void GenerateMesh()
         {
-            frameFilter.mesh = BeltMeshGenerator.Generate(p, frameBM, ConveyorLogisticsUtils.settings.BELT_SEGMENTS_PER_UNIT * p.GetTotalLength(), .251f);
-            beltFilter.mesh = BeltMeshGenerator.Generate(p, beltBM, ConveyorLogisticsUtils.settings.BELT_SEGMENTS_PER_UNIT * p.GetTotalLength(), .25f, 1f, true);
+            frameFilter.mesh = BeltMeshGenerator.Generate(p, frameBM, ConveyorLogisticsUtils.settings.BELT_SEGMENTS_PER_UNIT * p.GetTotalLength(), 0.251f);
+            beltFilter.mesh = BeltMeshGenerator.Generate(p, beltBM, ConveyorLogisticsUtils.settings.BELT_SEGMENTS_PER_UNIT * p.GetTotalLength(), 0.25f, 1f, true);
         }
     }
 }
