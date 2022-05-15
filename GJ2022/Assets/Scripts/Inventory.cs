@@ -9,7 +9,9 @@ public class Inventory: MonoBehaviour
 {
     public static int numOfRaw = 2;
     public static int numOfProduction = 2;
-
+    public static int numOfSpecial = 2;
+    
+    // records of amounts and efficiencies
     public int[] rawAmounts = new int[numOfRaw];
     public float[] rawEfficiencies = new float[numOfRaw];
 
@@ -18,47 +20,107 @@ public class Inventory: MonoBehaviour
 
     public int[] productionAmount = new int[numOfProduction];
     public float[] productionEfficiencies = new float[numOfProduction];
+    public int[] productionScore = new int[numOfProduction];
 
-    // TODO: special materials
+    public int[] specialAmount = new int[numOfSpecial];
     
-    private Robot _bufferedRobot;
+    public Robot bufferedRobot;
 
+    // control score and tasks.
+    // TODO: tasks
+    public int finalTargetScore;
     public int score;
 
-    // singleton
-    private static Inventory _instance;
-    public static Inventory GetInventory() {
-        return _instance;
+    // ======== APIs for WorkArea when amounts or efficiencies change ========
+    
+    // Call by WorkArea when it finishes a job.
+    public void AddAmount(WorkArea.WorkType workType, int workTypeNumber, int amount)
+    {
+        switch (workType)
+        {
+            case WorkArea.WorkType.Raw:
+                rawAmounts[workTypeNumber] += 1;
+                break;
+            case WorkArea.WorkType.Robot:
+                if (robotAmount == 0)
+                    bufferedRobot = _GenerateBufferedRobot();  // generate bufferedRobot if it's null
+                robotAmount += 1;
+                break;
+            case WorkArea.WorkType.Production:
+                productionAmount[workTypeNumber] += 1;
+                // TODO: increase score
+                break;
+        }
+        // TODO: check current task
     }
 
+    // Called by WorkArea whose total efficiency just changed.
+    public void SetEfficiency(WorkArea.WorkType workType, int workTypeNumber, float value)
+    {
+        switch (workType)
+        {
+            case WorkArea.WorkType.Raw:
+                rawEfficiencies[workTypeNumber] = value;
+                break;
+            case WorkArea.WorkType.Robot:
+                robotEfficiency = value;
+                break;
+            case WorkArea.WorkType.Production:
+                productionEfficiencies[workTypeNumber] = value;
+                break;
+        }
+        // TODO: check current task
+    }
     
+    // ======== operations of bufferedRobot =========
+    
+    // Generate next bufferedRobot, return null if robotAmount == 0
+    private Robot _GenerateBufferedRobot()
+    {
+        // TODO
+        return null;
+    }
+    
+    // Sell bufferedRobot, generate a new one if still robotAmount > 0;
+    public void SellBufferedRobot()
+    {
+        score += bufferedRobot.price;
+        --robotAmount;
+        bufferedRobot = _GenerateBufferedRobot();
+    }
+    
+    // Called right after the player places the bufferedRobot in a WorkArea or sells it.
+    // It will return the bufferedRobot being placed for binding to WorkArea or for reading its value,
+    // and generate a new bufferedRobot if robotAmount > 0.
     public Robot FetchBufferedRobot()
     {
-        if (_bufferedRobot == null) return null;
+        if (bufferedRobot == null) return null;
         
-        Robot ret = _bufferedRobot;
-        if (robotAmount > 0)
-        {
-            // TODO
-            // _bufferedRobot = 
-            --robotAmount;
-        }
+        Robot ret = bufferedRobot;
+        if (robotAmount > 0) --robotAmount;
+        bufferedRobot = _GenerateBufferedRobot();
 
         return ret;
     }
 
+    // ======== singleton ========
+    
+    private static Inventory _instance;
+    public static Inventory GetInventory() {
+        return _instance;
+    }
     protected virtual void Awake()
     {
         _instance = this;
     }
 
+    // ======== common ========
+    
     void Start()
     {
-        // rawAmounts = new int[numOfRaw];
-        // rawEfficiencies = new float[numOfRaw];
-        // productionEfficiencies = new float[numOfProduction];
+        
     }
-
+    
     private float t = 0;
     void Update()
     {

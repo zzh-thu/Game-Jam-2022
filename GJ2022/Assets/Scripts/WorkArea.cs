@@ -11,7 +11,7 @@ public class WorkArea : MonoBehaviour
         Production
     }
 
-    // robots
+    // Robots
     public int maxY;
     private Robot[,] _robots;
 
@@ -26,90 +26,100 @@ public class WorkArea : MonoBehaviour
     public int[] inputRaw; // not used in WorkType == Raw
     public WorkType workType;
     public int workTypeNumber;
-    // public int[] outputNum = new int[Inventory.NumOfProduction];  // not used in WorkType == Robot, TODO
-    public int price;  // only used in WorkType == Production
 
-    // Change recorded efficiency in Inventory
+    // Change recorded efficiency in Inventory.
     private void _InformEfficiency()
     {
-        var inventory = Inventory.GetInventory();
-        switch (workType)
-        {
-            case WorkType.Raw:
-                inventory.rawEfficiencies[workTypeNumber] = _efficiency;
-                break;
-            case WorkType.Robot:
-                inventory.robotEfficiency = _efficiency;
-                break;
-            case WorkType.Production:
-                inventory.productionEfficiencies[workTypeNumber] = _efficiency;
-                break;
-        }
+        Inventory.GetInventory().SetEfficiency(workType, workTypeNumber, _efficiency);
     }
 
-    // ====    ====    ====    ====    ====    ====    ====    ====
-    // Functions below are used during robots' state transition, to:
+    // Turn on or turn off this WorkArea.
+    public void TurnOnOrOff()
+    {
+        isTurnedOn = !isTurnedOn;
+    }
+
+    // ======== APIs for Robots' state transitions ========
+    // Functions below are used during Robots' state transition, to:
     // 1. Recalculate the efficiency of this WorkArea, or
-    // 2. Inform other robots in this WorkArea
+    // 2. Inform other Robots in this WorkArea.
     
-    // Check if there is a robot in its left, or right
-    private bool _HasRobotInLeft(int x, int y)
+    // Check if there is a Robot in this position.
+    private bool _HasRobot(int x, int y)
     {
-        return 0 < y && _robots[x, y - 1] != null;
-    }
-    private bool _HasRobotInRight(int x, int y)
-    {
-        return y < maxY - 1 && _robots[x, y + 1] != null;
+        return 0 < y && y < maxY - 1 && ReferenceEquals(_robots[x, y - 1], null);
     }
 
-    // Put a robot to a given position in this WorkArea
+    // Put a Robot to a given position in this WorkArea.
     public void PutRobot(int x, int y)
     {
         var robot = Inventory.GetInventory().FetchBufferedRobot();
         robot.Bind(this);
         _robots[x, y] = robot;
         
-        if (_HasRobotInLeft(x, y) && _robots[x, y - 1].SpreadDebuff()) ++robot.debuffNum;
-        if (_HasRobotInRight(x, y) && _robots[x, y + 1].SpreadDebuff()) ++robot.debuffNum;
+        if (_HasRobot(x, y - 1) && _robots[x, y - 1].SpreadsDebuff()) ++robot.debuffNum;
+        if (_HasRobot(x, y + 1) && _robots[x, y + 1].SpreadsDebuff()) ++robot.debuffNum;
         _efficiency += robot.GetEfficiency();
         
         _InformEfficiency();
     }
 
-    // Called by a robot when its patience drops to 0
-    public void RobotSleep(int x, int y)
+    // Called by a Robot when its patience drops to 0.
+    public void RobotSleep(Robot robot)
     {
-        _efficiency -= _robots[x, y].GetEfficiency();
-        
-        if (_HasRobotInLeft(x, y)) ++_robots[x, y - 1].debuffNum;
-        if (_HasRobotInRight(x, y)) ++_robots[x, y + 1].debuffNum;
+        int x = robot.x, y = robot.y;
+        _efficiency -= robot.GetEfficiency();
+
+        if (_HasRobot(x, y - 1)) ++_robots[x, y - 1].debuffNum;
+        if (_HasRobot(x, y + 1)) ++_robots[x, y + 1].debuffNum;
         
         _InformEfficiency();
     }
 
-    // Called by a robot when the player decides to recycle it, by clicking it or somehow
-    public Robot FindRecycledAgent(int x, int y)
+    // Called by a Robot when the player decides to recycle it, by clicking it or somehow.
+    public Robot FindRecycledAgent(Robot recycledRobot)
     {
-        // TODO
-        // check state to change efficiency
-        // find by distance
-        // set its state, recalculate efficiency
-        // navigate it to (x, y)
-        return null;
+        int x = recycledRobot.x, y = recycledRobot.y;
+        if (!recycledRobot.SpreadsDebuff()) _efficiency -= recycledRobot.GetEfficiency();  // recycle an active Robot
+
+        // find the closet active 
+        Robot agent = null;
+        for (int i = 1; i < maxY; ++i)
+        {
+            if (_HasRobot(x, y - i) && _robots[x, y - i].state == Robot.RobotState.Active)
+            {
+                agent = _robots[x, y - i];
+                break;
+            }
+
+            if (_HasRobot(x, y + i) && _robots[x, y + i].state == Robot.RobotState.Active)
+            {
+                agent = _robots[x, y + i];
+                break;
+            }
+        }
+        if (ReferenceEquals(agent, null)) return null;
+        
+        _efficiency -= agent.GetEfficiency();
+        agent.state = Robot.RobotState.MovingToRecycle;
+        // TODO: navigate it to (x, y)
+        return agent;
     }
 
+    // Called by a recycled Robot when the recycle is finished.
     public void ReleaseRecycledAgent(Robot recycledRobot)
     {
-        // TODO:
-        // navigate agent to (x, y)
-        // set its state, recalculate efficiency
-        // release recycledRobot
+        var agent = recycledRobot.recycledAgent;
+        // TODO: navigate agent to (x, y)
+        agent.state = Robot.RobotState.MovingFromRecycle;
+        
+        int x = recycledRobot.x, y = recycledRobot.y;
+        _robots[x, y] = null;
+        
+        // TODO: add raw or special materials to inventory
     }
-
-    public void TurnOnOrOff()
-    {
-        isTurnedOn = !isTurnedOn;
-    }
+    
+    // ======== common ========
 
     void Start()
     {
@@ -120,13 +130,13 @@ public class WorkArea : MonoBehaviour
         foreach (var robot in GetComponentsInChildren<Robot>())  // calculate the initial efficiency
         {
             robot.Bind(this);
-            if (robot.state == Robot.RobotState.Active)
-                _efficiency += robot.GetEfficiency();
+            _efficiency += robot.GetEfficiency();
         }
+        
         _InformEfficiency();
     }
 
-    // Try to start next work in Update
+    // Try to start next work, called in Update.
     private void _TryProduce()
     {
         var inventory = Inventory.GetInventory();

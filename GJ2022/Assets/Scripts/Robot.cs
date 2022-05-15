@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Robot : MonoBehaviour
 {
-    public int x, y;
     public enum RobotState
     {
         Active,
@@ -16,25 +15,34 @@ public class Robot : MonoBehaviour
         Recycling
     }
     
-    // efficiency
+    // efficiencies
     public float[] rawEfficiencies;
     public float robotEfficiency;
     public float[] productionEfficiencies;
     private float _efficiency;
     
+    // other attributes
+    public int x, y; // coordination in WorkArea
+    public int price;
+    private WorkArea _workArea;
+    
+    // related to being recycled
     public float recycledProgress;
     public float recycledProgressNeeded;
     public Robot recycledAgent;
+    public bool isEmergency;
     
-    public int price;
-
+    // state
     public RobotState state;
     public float patience;
     public int debuffNum;
-    private WorkArea _workArea;
     
+    // Bind this Robot to the WorkArea it belongs, which means:
+    // 1. Saving a reference of WorkArea
+    // 2. Deciding the actual efficiency
     public void Bind(WorkArea workArea)
     {
+        _workArea = workArea;
         int workTypeNumber = workArea.workTypeNumber;
         switch (workArea.workType)
         {
@@ -50,21 +58,42 @@ public class Robot : MonoBehaviour
         }
     }
 
-    public bool SpreadDebuff()
+    // Denotes whether it exerts debuff on adjacent robots(if exist).
+    public bool SpreadsDebuff()
     {
         return patience <= 0;
     }
     
+    // Return efficiency, which denotes the efficiency of:
+    // 1. Recycling, when it's doing recycling, or
+    // 2. Working, when it has other states including even sleeping, for
+    //    the convenience of calculating the efficiency.
     public float GetEfficiency()
     {
         switch (state)
         {
             case RobotState.Recycling:
-                return robotEfficiency;  // TODO
+                return robotEfficiency;
             default:
-                return _efficiency;  // TODO
+                return _efficiency;
         }
     }
+
+    // Called when player decides to recycle this Robot.
+    // Return whether an active Robot can be found as recycleAgent.
+    public bool Recycle(bool isEmergentDissembling)
+    {
+        isEmergency = isEmergentDissembling;
+        recycledAgent = _workArea.FindRecycledAgent(this);
+        if (!ReferenceEquals(recycledAgent, null))
+        {
+            state = RobotState.Recycled;
+            return true;
+        }
+        return false;
+    }
+    
+    // ======== common ========
     
     void Start()
     {
@@ -89,20 +118,20 @@ public class Robot : MonoBehaviour
             case RobotState.Active:
                 patience -= Time.deltaTime * (1 + debuffNum);
                 if (patience <= 0) state = RobotState.Sleepy;
-                recycledAgent = _workArea.FindRecycledAgent(x, y);
+                _workArea.RobotSleep(this);
                 break;
             case RobotState.Sleepy:
                 break;
             case RobotState.MovingToRecycle:
-                
+                // TODO: check navigation state
                 break;
             case RobotState.MovingFromRecycle:
-                // TODO
+                // TODO: check navigation state
                 break;
             case RobotState.Recycled:
                 if (recycledAgent.state == RobotState.Recycling)
                 {
-                    recycledProgress += recycledAgent.robotEfficiency;
+                    recycledProgress += recycledAgent.GetEfficiency();
                     if (recycledProgress >= recycledProgressNeeded)
                         _workArea.ReleaseRecycledAgent(recycledAgent);
                 }
