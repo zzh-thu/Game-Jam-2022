@@ -123,6 +123,11 @@ public class IPathTesterEditor : Editor
     {
         bool changed = false;
 
+        holder.start = EditorGUILayout.Vector3Field("start", holder.start);
+        holder.end = EditorGUILayout.Vector3Field("end", holder.end);
+        holder.startdir = EditorGUILayout.Vector3Field("startdir", holder.startdir);
+        holder.enddir = EditorGUILayout.Vector3Field("enddir", holder.enddir);
+
         float pathPercent = EditorGUILayout.Slider(pathP, 0, 1);
         if (pathPercent != pathP)
         {

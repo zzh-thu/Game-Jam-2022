@@ -8,6 +8,7 @@ namespace FactoryFramework
 
     public class IPathTester : MonoBehaviour
     {
+        
         public Vector3 start = Vector3.zero;
         public Vector3 end = Vector3.forward;
         public Vector3 startdir = Vector3.forward;
