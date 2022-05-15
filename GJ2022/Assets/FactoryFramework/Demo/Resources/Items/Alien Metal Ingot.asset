@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc93331e9d78834392e6618f7c1427e, type: 3}
+  m_Name: Alien Metal Ingot
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: d1f7780b71c32be4db91c8fa2baeb358, type: 3}
+  prefab: {fileID: 9008315631786441923, guid: c934e5e828057be44947057f0a40b9e8, type: 3}
+  itemData:
+    description: Processed Alien Metal
+    maxStack: 25
+  DebugColor: {r: 0.6039216, g: 0.67058825, b: 0.6901961, a: 0}

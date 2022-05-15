@@ -1,0 +1,17 @@
+~
+v1.1.0 Jobs + Burst Mesh Generation
+* Implemented Jobs accelerated mesh generation for significant performance increase
+* Fixed issue with not being able to build due to editor scripts
+
+v1.0.1 Initial BugFixes and Basic Events
+* Fixed belt height when placing endpoint on terrain
+* Added basic lifecycle events for buildings and conveyors
+* Added Start screen for easy setup upon new version download
+* Fixed Conveyor Belt collision maskings
+* Demo scene to illustrate custom belts
+
+v1.0.0 Initial Release
+* Base Classes for Conveyor Belts, Sockets, and Buildings
+* Path Solving for Linear, Spline, or Smart Path types
+* Demo scene playable sandbox
+* Customizable Belt model system
