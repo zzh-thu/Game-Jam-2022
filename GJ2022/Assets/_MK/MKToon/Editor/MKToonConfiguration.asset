@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MKToonConfiguration
   m_EditorClassIdentifier: 
   _renderPipeline: 0
-  showInstallerOnReload: 1
+  showInstallerOnReload: 0
   _titleImage: {fileID: 2800000, guid: c79fa54689197e04caa35ef524d4c035, type: 3}
   _readMe: {fileID: 102900000, guid: ad1cc8c198011f44f9827e2f9dfc2f82, type: 3}
   _basePackageBuiltin: {fileID: 102900000, guid: feb819dbe0310c5489ab8aa2b2243132, type: 3}
@@ -49,13 +49,13 @@ MonoBehaviour:
   - rid: 5
   - rid: 6
   _globalShaderFeaturesTemp:
-  - rid: 6276442641290494015
-  - rid: 6276442641290494016
-  - rid: 6276442641290494017
-  - rid: 6276442641290494018
-  - rid: 6276442641290494019
-  - rid: 6276442641290494020
-  - rid: 6276442641290494021
+  - rid: 6276442641290494134
+  - rid: 6276442641290494135
+  - rid: 6276442641290494136
+  - rid: 6276442641290494137
+  - rid: 6276442641290494138
+  - rid: 6276442641290494139
+  - rid: 6276442641290494140
   references:
     version: 2
     RefIds:
@@ -137,7 +137,7 @@ MonoBehaviour:
         _name: Linear Light Attenuation
         _tooltip: Changes the light attenuation for non-directional lights more linear
           (Approximately like builtin renderpipeline).
-    - rid: 6276442641290494015
+    - rid: 6276442641290494134
       type: {class: GlobalShaderFeature, ns: MK.Toon.Editor, asm: MK.Toon.Editor}
       data:
         _mode: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
         _compileDirectives: []
         _name: Multiply vertex color with albedo
         _tooltip: Multiplies vertex color into the albedo Color.
-    - rid: 6276442641290494016
+    - rid: 6276442641290494135
       type: {class: GlobalShaderFeature, ns: MK.Toon.Editor, asm: MK.Toon.Editor}
       data:
         _mode: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
         - MK_TOON_OUTLINE_FADING_INVERSE_EXPONENTIAL
         _name: Outline Distance Fading
         _tooltip: Enable outline distance based fading.
-    - rid: 6276442641290494017
+    - rid: 6276442641290494136
       type: {class: GlobalShaderFeature, ns: MK.Toon.Editor, asm: MK.Toon.Editor}
       data:
         _mode: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
         _compileDirectives: []
         _name: Force Point Filtering
         _tooltip: Forces point filtering on textures.
-    - rid: 6276442641290494018
+    - rid: 6276442641290494137
       type: {class: GlobalShaderFeature, ns: MK.Toon.Editor, asm: MK.Toon.Editor}
       data:
         _mode: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
         _compileDirectives: []
         _name: Dissolve Projection Screen Space
         _tooltip: Forces dissolve projection into screen space.
-    - rid: 6276442641290494019
+    - rid: 6276442641290494138
       type: {class: GlobalShaderFeature, ns: MK.Toon.Editor, asm: MK.Toon.Editor}
       data:
         _mode: 1
@@ -193,7 +193,7 @@ MonoBehaviour:
         _compileDirectives: []
         _name: Enable Local Antialiasing
         _tooltip: Enables local antialiasing except for mobile devices.
-    - rid: 6276442641290494020
+    - rid: 6276442641290494139
       type: {class: GlobalShaderFeature, ns: MK.Toon.Editor, asm: MK.Toon.Editor}
       data:
         _mode: 0
@@ -204,7 +204,7 @@ MonoBehaviour:
         _name: Stylize System Shadows
         _tooltip: Stylizes the system shadows like the lighting. Be careful with
           the thresholds!
-    - rid: 6276442641290494021
+    - rid: 6276442641290494140
       type: {class: GlobalShaderFeature, ns: MK.Toon.Editor, asm: MK.Toon.Editor}
       data:
         _mode: 0

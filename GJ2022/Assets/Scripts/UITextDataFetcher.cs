@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UITextDataFetcher : MonoBehaviour
 {
@@ -24,17 +25,19 @@ public class UITextDataFetcher : MonoBehaviour
     public WorkArea.WorkType workType;
     public int workTypeNum;
 
-    private Text _text;
+    
+    private TextMeshProUGUI _text;
     
     void Start()
     {
-        _text = gameObject.GetComponent<Text>();
+        _text = GetComponent<TextMeshProUGUI>();
     }
 
     private String _GetNeededData()
     {
         Robot robot = null; // TODO
         var inventory = Inventory.GetInventory();
+        Debug.Log(inventory);
         switch (dataType)
         {
             case DataType.Amount:
