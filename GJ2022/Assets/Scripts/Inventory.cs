@@ -25,6 +25,9 @@ public class Inventory: MonoBehaviour
         public int RewardScore;
     }
     
+    // the whole scene
+    public GameObject scene;
+    
     // public parameters, TODO
     public static int numOfRaw = 2;
     public static int numOfProduction = 2;
@@ -161,6 +164,17 @@ public class Inventory: MonoBehaviour
     protected virtual void Awake()
     {
         _instance = this;
+    }
+    
+    // ======== control stream ========
+    public void Pause()
+    {
+        scene.SetActive(false);
+    }
+
+    public void Continue()
+    {
+        scene.SetActive(true);
     }
 
     // ======== common ========
