@@ -7,6 +7,23 @@ using UnityEngine;
 
 public class Inventory: MonoBehaviour
 {
+    public class Task
+    {
+        // requirements
+        public int[] RawAmounts = new int[numOfRaw];
+        public float[] RawEfficiencies = new float[numOfRaw];
+
+        public int RobotAmount;
+        public float RobotEfficiency;
+
+        public int[] ProductionAmount = new int[numOfProduction];
+        public float[] ProductionEfficiencies = new float[numOfProduction];
+
+        public int[] SpecialAmount = new int[numOfSpecial];
+        
+        // attributes
+        public int RewardScore;
+    }
     public static int numOfRaw = 2;
     public static int numOfProduction = 2;
     public static int numOfSpecial = 2;
@@ -27,9 +44,11 @@ public class Inventory: MonoBehaviour
     public Robot bufferedRobot;
 
     // control score and tasks.
-    // TODO: tasks
     public int finalTargetScore;
     public int score;
+    public int taskDurationInSeconds;
+    public static int taskNum = 2;
+    public Task[] Tasks = new Task[taskNum];
 
     // ======== APIs for WorkArea when amounts or efficiencies change ========
     
@@ -124,6 +143,7 @@ public class Inventory: MonoBehaviour
     private float t = 0;
     void Update()
     {
+        // TODO: check time for tasks
         t += Time.deltaTime;
         if (t >= 5)
         {
