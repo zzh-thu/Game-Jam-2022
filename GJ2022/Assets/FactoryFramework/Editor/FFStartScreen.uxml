@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="FactoryFramework.uss" />
+    <ui:VisualElement style="flex-direction: column; height: 100%; width: auto;">
+        <ui:VisualElement style="flex-direction: column; height: auto; width: auto; flex-shrink: 0; flex-grow: 1; align-items: stretch; justify-content: space-between;">
+            <ui:Label text="Render Pipeleine Setup" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; -unity-font-style: bold;" />
+            <ui:Button text="URP" display-tooltip-when-elided="true" name="urp" />
+            <ui:Button text="HDRP" display-tooltip-when-elided="true" name="hdrp" />
+            <ui:Label text="Learning Resources" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; -unity-font-style: bold;" />
+            <ui:Button text="Online Documentation" display-tooltip-when-elided="true" name="docs" />
+            <ui:Label text="Settings" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; -unity-font-style: bold;" />
+            <ui:Button text="Open Window" display-tooltip-when-elided="true" name="settings" />
+            <ui:VisualElement style="flex-grow: 1; height: 15px;" />
+            <ui:VisualElement style="flex-direction: row; flex-wrap: nowrap; flex-grow: 0;">
+                <ui:Label text="Community" display-tooltip-when-elided="true" style="flex-grow: 1; -unity-text-align: middle-center;" />
+                <ui:Button text="Discord" display-tooltip-when-elided="true" name="discord" style="flex-grow: 1;" />
+                <ui:Button text="Twitter" display-tooltip-when-elided="true" name="twitter" style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; height: 15px;" />
+            <ui:VisualElement style="border-left-color: rgb(0, 0, 0); height: 50px;">
+                <ui:Label text="Factory Framework" display-tooltip-when-elided="true" style="align-items: auto; -unity-text-align: upper-center;" />
+                <ui:VisualElement style="flex-direction: row; -unity-text-align: upper-center; justify-content: center;">
+                    <ui:Label text="Current Version: " display-tooltip-when-elided="true" />
+                    <ui:Label text="v0.0.0" display-tooltip-when-elided="true" name="current-version" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-direction: row; align-items: center; justify-content: center;">
+                    <ui:Label text="Asset Store Link" display-tooltip-when-elided="true" name="asset-store-link" class="link" style="border-bottom-width: 1px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ff-icon" style="position: absolute; right: 0; bottom: -5px; width: 75px; height: 75px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; -unity-text-align: upper-center; background-image: url(&apos;/Assets/FactoryFramework/FF_icon_transparent.png&apos;); -unity-background-scale-mode: scale-and-crop;" />
+    </ui:VisualElement>
+</ui:UXML>

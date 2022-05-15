@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc93331e9d78834392e6618f7c1427e, type: 3}
+  m_Name: Copper Mineral
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: ee5324f3629a8b347939c0aa1a43a014, type: 3}
+  prefab: {fileID: 8216807597192689203, guid: 20763931dd972964b9bb5e4ea09457db, type: 3}
+  itemData:
+    description: 
+    maxStack: 50
+  DebugColor: {r: 1, g: 0.35096747, b: 0, a: 1}

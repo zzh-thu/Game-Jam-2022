@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71434d771beb32d4db56c8abf8dc5382, type: 3}
+  m_Name: ConveyorLogisticsSettings
+  m_EditorClassIdentifier: 
+  BELT_SCALE: 0.35
+  BELT_SPACING: 1
+  BELT_SEGMENTS_PER_UNIT: 4
+  BELT_TURN_RADIUS: 0.5
+  BELT_RAMP_RADIUS: 0.5
+  BELT_VERTICAL_TOLERANCE: 0.1
+  SHOW_DEBUG_LOGS: 0
+  PATHTYPE: 0

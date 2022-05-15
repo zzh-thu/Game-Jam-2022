@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc93331e9d78834392e6618f7c1427e, type: 3}
+  m_Name: Iron Ingot
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: afb79cce2e9eea44ab97f1af61f247d8, type: 3}
+  prefab: {fileID: 2782980965853948548, guid: 2fb1eec9eadc727449b12dfa7b61f77e, type: 3}
+  itemData:
+    description: This is a description
+    maxStack: 50
+  DebugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

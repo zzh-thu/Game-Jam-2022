@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="FactoryFramework.uss" />
+    <ui:Slider picking-mode="Ignore" label="Seconds to Create" value="42" high-value="100" binding-path="tickCost" low-value="0.1" show-input-field="true" direction="Horizontal" />
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:VisualElement class="input-items-container">
+            <ui:Label text="Recipe Inputs" display-tooltip-when-elided="true" class="center-title" />
+            <ui:ListView focusable="true" name="input-items" reorderable="false" show-bound-collection-size="true" item-height="65" style="height: 100%;" />
+        </ui:VisualElement>
+        <ui:Button text="+" display-tooltip-when-elided="true" name="add-input-button" />
+        <ui:Label text="↓" display-tooltip-when-elided="true" class="center-title" />
+        <ui:VisualElement class="output-items-container">
+            <ui:Label text="Recipe Outputs" display-tooltip-when-elided="true" class="center-title" />
+            <ui:ListView focusable="true" name="output-items" item-height="65" />
+            <ui:Button text="+" display-tooltip-when-elided="true" name="add-output-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
