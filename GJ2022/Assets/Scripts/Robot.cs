@@ -52,7 +52,7 @@ public class Robot : MonoBehaviour
 
     public bool SpreadDebuff()
     {
-        return state is RobotState.Sleepy or RobotState.Recycled;
+        return patience <= 0;
     }
     
     public float GetEfficiency()

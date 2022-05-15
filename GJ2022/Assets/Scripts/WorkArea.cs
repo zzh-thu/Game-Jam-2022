@@ -29,6 +29,7 @@ public class WorkArea : MonoBehaviour
     // public int[] outputNum = new int[Inventory.NumOfProduction];  // not used in WorkType == Robot, TODO
     public int price;  // only used in WorkType == Production
 
+    // Change recorded efficiency in Inventory
     private void _InformEfficiency()
     {
         var inventory = Inventory.GetInventory();
@@ -45,36 +46,17 @@ public class WorkArea : MonoBehaviour
                 break;
         }
     }
-    
-    public void RemoveRobot(Robot robot)
-    {
-        // TODO: buff of robots
-        switch (workType)
-        {
-            case WorkType.Raw:
-                _efficiency -= robot.rawEfficiencies[workTypeNumber];
-                break;
-            case WorkType.Robot:
-                _efficiency -= robot.robotEfficiency;
-                break;
-            case WorkType.Production:
-                _efficiency -= robot.productionEfficiencies[workTypeNumber];
-                break;
-        }
-        _InformEfficiency();
-    }
 
     // ====    ====    ====    ====    ====    ====    ====    ====
     // Functions below are used during robots' state transition, to:
     // 1. Recalculate the efficiency of this WorkArea, or
     // 2. Inform other robots in this WorkArea
     
-    // Check if there is a robot in its left
+    // Check if there is a robot in its left, or right
     private bool _HasRobotInLeft(int x, int y)
     {
         return 0 < y && _robots[x, y - 1] != null;
     }
-
     private bool _HasRobotInRight(int x, int y)
     {
         return y < maxY - 1 && _robots[x, y + 1] != null;
@@ -94,6 +76,7 @@ public class WorkArea : MonoBehaviour
         _InformEfficiency();
     }
 
+    // Called by a robot when its patience drops to 0
     public void RobotSleep(int x, int y)
     {
         _efficiency -= _robots[x, y].GetEfficiency();
@@ -104,9 +87,11 @@ public class WorkArea : MonoBehaviour
         _InformEfficiency();
     }
 
+    // Called by a robot when the player decides to recycle it, by clicking it or somehow
     public Robot FindRecycledAgent(int x, int y)
     {
         // TODO
+        // check state to change efficiency
         // find by distance
         // set its state, recalculate efficiency
         // navigate it to (x, y)
@@ -186,7 +171,7 @@ public class WorkArea : MonoBehaviour
                     inventory.robotAmount += 1;
                     break;
                 case WorkType.Production:
-                    inventory.
+                    inventory.productionAmount[workTypeNumber] += 1;
                     break;
             }
             _progress = 0;  // change the state to idle
