@@ -10,14 +10,17 @@ public class Inventory: MonoBehaviour
     public static int numOfRaw = 2;
     public static int numOfProduction = 2;
 
-    public int[] rawAmounts;
-    public float[] rawEfficiencies;
+    public int[] rawAmounts = new int[numOfRaw];
+    public float[] rawEfficiencies = new float[numOfRaw];
 
     public int robotAmount;
     public float robotEfficiency;
 
-    public float[] productionEfficiencies;
+    public int[] productionAmount = new int[numOfProduction];
+    public float[] productionEfficiencies = new float[numOfProduction];
 
+    // TODO: special materials
+    
     private Robot _bufferedRobot;
 
     public int score;
@@ -51,9 +54,9 @@ public class Inventory: MonoBehaviour
 
     void Start()
     {
-        rawAmounts = new int[numOfRaw];
-        rawEfficiencies = new float[numOfRaw];
-        productionEfficiencies = new float[numOfProduction];
+        // rawAmounts = new int[numOfRaw];
+        // rawEfficiencies = new float[numOfRaw];
+        // productionEfficiencies = new float[numOfProduction];
     }
 
     private float t = 0;
