@@ -1,12 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class Inventory: MonoBehaviour
 {
+    public class Task
+    {
+        // requirements
+        public int[] RawAmounts = new int[numOfRaw];
+        public float[] RawEfficiencies = new float[numOfRaw];
+
+        public int RobotAmount;
+        public float RobotEfficiency;
+
+        public int[] ProductionAmount = new int[numOfProduction];
+        public float[] ProductionEfficiencies = new float[numOfProduction];
+
+        public int[] SpecialAmount = new int[numOfSpecial];
+        
+        // attributes
+        public int RewardScore;
+    }
     public static int numOfRaw = 2;
     public static int numOfProduction = 2;
     public static int numOfSpecial = 2;
@@ -24,12 +41,22 @@ public class Inventory: MonoBehaviour
 
     public int[] specialAmount = new int[numOfSpecial];
     
+    // bufferedRobot
     public Robot bufferedRobot;
+    public GameObject robotObject;
 
     // control score and tasks.
-    // TODO: tasks
     public int finalTargetScore;
     public int score;
+    public int taskDurationInSeconds;
+    public static int taskNum = 2;
+    public Task[] Tasks = new Task[taskNum];
+    
+    // TODO: more public params for random, a name for this section
+    public static int minSpecialByEmergency;
+    public static int maxSpecialByEmergency;
+    public static int minRawByRecycle;
+    public static int maxRawByRecycle;
 
     // ======== APIs for WorkArea when amounts or efficiencies change ========
     
@@ -68,6 +95,7 @@ public class Inventory: MonoBehaviour
             case WorkArea.WorkType.Production:
                 productionEfficiencies[workTypeNumber] = value;
                 break;
+            
         }
         // TODO: check current task
     }
@@ -77,8 +105,16 @@ public class Inventory: MonoBehaviour
     // Generate next bufferedRobot, return null if robotAmount == 0
     private Robot _GenerateBufferedRobot()
     {
-        // TODO
-        return null;
+        if (robotAmount == 0) return null;
+        
+        var robotObj = Instantiate(robotObject, new Vector3(0, -100, 0), Quaternion.identity);
+        foreach (var i in robotObj.GetComponentsInChildren<MeshRenderer>())  // turn off MeshRenderer
+            i.enabled = false;
+        var robotScript = robotObj.GetComponent<Robot>();
+        robotScript.state = Robot.RobotState.Sleepy;  // set state of Robot to sleepy
+        
+        --robotAmount;
+        return robotScript;
     }
     
     // Sell bufferedRobot, generate a new one if still robotAmount > 0;
@@ -124,6 +160,7 @@ public class Inventory: MonoBehaviour
     private float t = 0;
     void Update()
     {
+        // TODO: check time for tasks
         t += Time.deltaTime;
         if (t >= 5)
         {
