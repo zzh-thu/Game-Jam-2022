@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="FactoryFramework.uss" />
+    <ui:Label text="Item Prefab" display-tooltip-when-elided="true" style="position: absolute; height: auto; width: auto; -unity-font-style: bold; font-size: 24px; top: 0; left: 50%; align-items: flex-end; right: 0; -unity-text-align: upper-center;" />
+    <ui:Label text="Item Icon" display-tooltip-when-elided="true" style="position: absolute; height: auto; width: auto; -unity-font-style: bold; font-size: 24px; right: 50%; left: 0; -unity-text-align: upper-center;" />
+    <ui:VisualElement class="container" style="max-height: 400px; min-height: 250px; height: 400px; flex-grow: 0; flex-shrink: 0; flex-wrap: nowrap; flex-direction: column; top: 36px; justify-content: flex-start;">
+        <ui:VisualElement class="icon-container" style="height: 100%; align-items: stretch;">
+            <ui:VisualElement name="2D-icon" tooltip="2D Icon" class="icon-display">
+                <uie:ObjectField name="icon" allow-scene-objects="false" binding-path="icon" />
+            </ui:VisualElement>
+            <ui:VisualElement name="3D-preview" tooltip="3D prefab Preview" class="icon-display">
+                <uie:ObjectField name="prefab" binding-path="prefab" allow-scene-objects="false" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="height: 90px; flex-direction: column; align-items: stretch; justify-content: flex-start; padding-top: 15px;">
+            <ui:TextField label="Item Description" name="item-description" value="Item Description goes Here." binding-path="itemData.description" style="flex-grow: 0;" />
+            <uie:IntegerField label="Max Items In Stack" name="max-stack" binding-path="itemData.maxStack" />
+            <uie:ColorField label="Debug Gizmo Color" name="debug-color" binding-path="DebugColor" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

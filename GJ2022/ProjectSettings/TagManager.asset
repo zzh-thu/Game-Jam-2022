@@ -4,7 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - RobotBase
+  - Terrain
+  - Building
+  - Resources
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -12,8 +15,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Terrain
+  - Belt Collideable
   - 
   - 
   - 

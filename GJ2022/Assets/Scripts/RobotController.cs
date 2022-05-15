@@ -25,7 +25,7 @@ public class RobotController : MonoBehaviour
 
     void Update()
     {
-
+        GetComponentInChildren<NavMeshAgent>();
     }
 }
 

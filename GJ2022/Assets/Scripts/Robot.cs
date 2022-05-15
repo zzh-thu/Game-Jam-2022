@@ -49,11 +49,21 @@ public class Robot : MonoBehaviour
                 break;
         }
     }
+
+    public bool SpreadDebuff()
+    {
+        return patience <= 0;
+    }
     
     public float GetEfficiency()
     {
-        if (patience <= 0) return 0;
-        return _efficiency;
+        switch (state)
+        {
+            case RobotState.Recycling:
+                return robotEfficiency;  // TODO
+            default:
+                return _efficiency;  // TODO
+        }
     }
     
     void Start()
@@ -84,7 +94,7 @@ public class Robot : MonoBehaviour
             case RobotState.Sleepy:
                 break;
             case RobotState.MovingToRecycle:
-                // TODO
+                
                 break;
             case RobotState.MovingFromRecycle:
                 // TODO
