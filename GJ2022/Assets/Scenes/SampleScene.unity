@@ -145,8 +145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a585ca1dcc9f47b59c3e2d2febc934e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 0
-  y: 0
   rawEfficiencies:
   - 0.2
   - 0.2
@@ -154,8 +152,17 @@ MonoBehaviour:
   productionEfficiencies:
   - 0.2
   - 0.2
-  patient: 100
+  x: 0
+  y: 0
   price: 0
+  recycledProgress: 0
+  recycledProgressNeeded: 0
+  recycledAgent: {fileID: 0}
+  isEmergency: 0
+  state: 0
+  patience: 0
+  debuffNum: 0
+  age: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,10 +379,20 @@ MonoBehaviour:
   - 0
   robotAmount: 0
   robotEfficiency: 0
+  productionAmount: 0000000000000000
   productionEfficiencies:
   - 0
   - 0
+  productionScore: 0000000000000000
+  specialAmount: 0000000000000000
+  specialNeededForCreate: 0000000000000000
+  bufferedRobot: {fileID: 0}
+  robotObject: {fileID: 0}
+  finalTargetScore: 0
   score: 0
+  taskDurationInSeconds: 0
+  accomplishedTaskNum: 0
+  time: 0
 --- !u!64 &1312009147
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -565,12 +582,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3443d7bcdcad719448bfc7a306ff447b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxY: 0
+  isTurnedOn: 1
   neededProgress: 1
-  neededRaw: 0000000000000000
+  inputRaw: 
   workType: 0
   workTypeNumber: 0
-  price: 0
-  isTurnedOn: 1
 --- !u!65 &2067883790
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -634,3 +651,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067883786}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2084953712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2084953714}
+  - component: {fileID: 2084953713}
+  m_Layer: 0
+  m_Name: InventoryEmptyObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2084953713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084953712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a5d689e231648c6957dda0398937553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawAmounts: 0000000000000000
+  rawEfficiencies:
+  - 0
+  - 0
+  robotAmount: 0
+  robotEfficiency: 0
+  productionAmount: 0000000000000000
+  productionEfficiencies:
+  - 0
+  - 0
+  productionScore: 0000000000000000
+  specialAmount: 0000000000000000
+  specialNeededForCreate: 0000000000000000
+  bufferedRobot: {fileID: 0}
+  robotObject: {fileID: 0}
+  finalTargetScore: 0
+  score: 0
+  taskDurationInSeconds: 0
+  accomplishedTaskNum: 0
+  time: 0
+--- !u!4 &2084953714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084953712}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -37,6 +37,9 @@ public class Robot : MonoBehaviour
     public float patience;
     public int debuffNum;
     
+    // timer
+    public float age;
+    
     // Bind this Robot to the WorkArea it belongs, which means:
     // 1. Saving a reference of WorkArea
     // 2. Deciding the actual efficiency
@@ -118,6 +121,7 @@ public class Robot : MonoBehaviour
 
     void Update()
     {
+        age += Time.deltaTime;
         switch (state)
         {
             case RobotState.Active:

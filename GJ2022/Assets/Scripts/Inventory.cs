@@ -24,9 +24,16 @@ public class Inventory: MonoBehaviour
         // attributes
         public int RewardScore;
     }
+    
+    // public parameters, TODO
     public static int numOfRaw = 2;
     public static int numOfProduction = 2;
     public static int numOfSpecial = 2;
+    
+    public static int minSpecialByEmergency;
+    public static int maxSpecialByEmergency;
+    public static int minRawByRecycle;
+    public static int maxRawByRecycle;
     
     // records of amounts and efficiencies
     public int[] rawAmounts = new int[numOfRaw];
@@ -40,6 +47,7 @@ public class Inventory: MonoBehaviour
     public int[] productionScore = new int[numOfProduction];
 
     public int[] specialAmount = new int[numOfSpecial];
+    public int[] specialNeededForCreate = new int[numOfSpecial];
     
     // bufferedRobot
     public Robot bufferedRobot;
@@ -50,13 +58,11 @@ public class Inventory: MonoBehaviour
     public int score;
     public int taskDurationInSeconds;
     public static int taskNum = 2;
+    public int accomplishedTaskNum;
     public Task[] Tasks = new Task[taskNum];
     
-    // TODO: more public params for random, a name for this section
-    public static int minSpecialByEmergency;
-    public static int maxSpecialByEmergency;
-    public static int minRawByRecycle;
-    public static int maxRawByRecycle;
+    // timer
+    public float time;
 
     // ======== APIs for WorkArea when amounts or efficiencies change ========
     
@@ -69,9 +75,8 @@ public class Inventory: MonoBehaviour
                 rawAmounts[workTypeNumber] += 1;
                 break;
             case WorkArea.WorkType.Robot:
-                if (robotAmount == 0)
-                    bufferedRobot = _GenerateBufferedRobot();  // generate bufferedRobot if it's null
                 robotAmount += 1;
+                _GenerateBufferedRobot();
                 break;
             case WorkArea.WorkType.Production:
                 productionAmount[workTypeNumber] += 1;
@@ -102,27 +107,25 @@ public class Inventory: MonoBehaviour
     
     // ======== operations of bufferedRobot =========
     
-    // Generate next bufferedRobot, return null if robotAmount == 0
-    private Robot _GenerateBufferedRobot()
+    // Try to generate next bufferedRobot.
+    private void _GenerateBufferedRobot()
     {
-        if (robotAmount == 0) return null;
+        if (robotAmount == 0 || !ReferenceEquals(bufferedRobot, null)) return;
         
         var robotObj = Instantiate(robotObject, new Vector3(0, -100, 0), Quaternion.identity);
         foreach (var i in robotObj.GetComponentsInChildren<MeshRenderer>())  // turn off MeshRenderer
             i.enabled = false;
-        var robotScript = robotObj.GetComponent<Robot>();
-        robotScript.state = Robot.RobotState.Sleepy;  // set state of Robot to sleepy
-        
-        --robotAmount;
-        return robotScript;
+        bufferedRobot = robotObj.GetComponent<Robot>();
+        bufferedRobot.state = Robot.RobotState.Sleepy;  // set state of Robot to sleepy
     }
     
     // Sell bufferedRobot, generate a new one if still robotAmount > 0;
     public void SellBufferedRobot()
     {
+        if (robotAmount == 0) return;
         score += bufferedRobot.price;
         --robotAmount;
-        bufferedRobot = _GenerateBufferedRobot();
+        _GenerateBufferedRobot();
     }
     
     // Called right after the player places the bufferedRobot in a WorkArea or sells it.
@@ -134,9 +137,19 @@ public class Inventory: MonoBehaviour
         
         Robot ret = bufferedRobot;
         if (robotAmount > 0) --robotAmount;
-        bufferedRobot = _GenerateBufferedRobot();
+        _GenerateBufferedRobot();
 
         return ret;
+    }
+
+    public void CreateRobotFromSpecial()
+    {
+        for (int i = 0; i < numOfSpecial; ++i)
+            if (specialAmount[i] < specialNeededForCreate[i]) return;
+        for (int i = 0; i < numOfSpecial; ++i)
+            specialAmount[i] -= specialNeededForCreate[i];
+        ++robotAmount;
+        _GenerateBufferedRobot();
     }
 
     // ======== singleton ========
@@ -161,14 +174,15 @@ public class Inventory: MonoBehaviour
     void Update()
     {
         // TODO: check time for tasks
-        t += Time.deltaTime;
-        if (t >= 5)
-        {
-            t = 0;
-            Debug.LogFormat("Inventory:\n" +
-                            "   RawAmounts: {0}, {1}\n" +
-                            "   RawEfficiencies: {2}, {3}\n",
-                rawAmounts[0], rawAmounts[1], rawEfficiencies[0], rawEfficiencies[1]);
-        }
+        // t += Time.deltaTime;
+        // if (t >= 5)
+        // {
+        //     t = 0;
+        //     Debug.LogFormat("Inventory:\n" +
+        //                     "   RawAmounts: {0}, {1}\n" +
+        //                     "   RawEfficiencies: {2}, {3}\n",
+        //         rawAmounts[0], rawAmounts[1], rawEfficiencies[0], rawEfficiencies[1]);
+        // }
+        time += Time.deltaTime;
     }
 }
