@@ -186,7 +186,7 @@ public class WorkArea : MonoBehaviour
                     inventory.robotAmount += 1;
                     break;
                 case WorkType.Production:
-                    inventory.
+                    inventory.robotAmount += 1;
                     break;
             }
             _progress = 0;  // change the state to idle
