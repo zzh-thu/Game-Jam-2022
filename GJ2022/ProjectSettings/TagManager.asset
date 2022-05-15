@@ -7,6 +7,7 @@ TagManager:
   - Terrain
   - Building
   - Resources
+  - Floor
   layers:
   - Default
   - TransparentFX

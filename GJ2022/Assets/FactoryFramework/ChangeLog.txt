@@ -1,4 +1,4 @@
-~
+
 v1.1.0 Jobs + Burst Mesh Generation
 * Implemented Jobs accelerated mesh generation for significant performance increase
 * Fixed issue with not being able to build due to editor scripts

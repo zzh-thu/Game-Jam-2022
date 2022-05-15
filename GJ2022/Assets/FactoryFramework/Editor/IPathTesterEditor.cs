@@ -6,6 +6,7 @@ using UnityEngine;
 
 
 [CustomEditor(typeof(IPathTester))]
+
 public class IPathTesterEditor : Editor
 {
     IPathTester holder;
@@ -32,6 +33,7 @@ public class IPathTesterEditor : Editor
 
         //draw anchors
         Handles.color = Color.white;
+
         Vector3 newStartPos = Handles.FreeMoveHandle(holder.start, Quaternion.identity, 0.1f, Vector3.zero, Handles.CircleHandleCap);
         if (newStartPos != holder.start)
         {

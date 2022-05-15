@@ -191,7 +191,7 @@ namespace FactoryFramework.Editor
             inputListView.selectionType = SelectionType.None;
             inputListView.itemHeight = 65;
             inputListView.style.height = (_recipe != null ? _recipe.inputs.Count() : 1) * 65;
-            inputListView.Refresh();
+            inputListView.Rebuild();
 
             var outputListView = _visualElement.Q<ListView>(name: "output-items");
             outputListView.makeItem = makeItem;
@@ -200,7 +200,7 @@ namespace FactoryFramework.Editor
             outputListView.selectionType = SelectionType.None;
             outputListView.itemHeight = 65;
             outputListView.style.height = (_recipe != null ? _recipe.outputs.Count() : 1) * 65;
-            outputListView.Refresh();
+            outputListView.Rebuild();
 
             return _visualElement;
         }
@@ -209,12 +209,12 @@ namespace FactoryFramework.Editor
         {
             var inputView = _visualElement.Q<ListView>(name: "input-items");
             inputView.itemsSource = _recipe.inputs;
-            inputView.Refresh();
+            inputView.Rebuild();
             inputView.style.height = _recipe.inputs.Length * 65;
 
             var outputView = _visualElement.Q<ListView>(name: "output-items");
             outputView.itemsSource = _recipe.outputs;
-            outputView.Refresh();
+            outputView.Rebuild();
             outputView.style.height = _recipe.outputs.Length * 65;
 
             Button addInputButton = _visualElement.Q<Button>(name: "add-input-button");
