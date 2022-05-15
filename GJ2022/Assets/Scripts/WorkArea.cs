@@ -8,7 +8,8 @@ public class WorkArea : MonoBehaviour
     {
         Raw,
         Robot,
-        Production
+        Production,
+        Emergency
     }
 
     // Robots
@@ -60,7 +61,7 @@ public class WorkArea : MonoBehaviour
         if (_HasRobot(x, y - 1) && _robots[x, y - 1].SpreadsDebuff()) ++robot.debuffNum;
         if (_HasRobot(x, y + 1) && _robots[x, y + 1].SpreadsDebuff()) ++robot.debuffNum;
         _efficiency += robot.GetEfficiency();
-        
+
         _InformEfficiency();
     }
 
@@ -113,10 +114,28 @@ public class WorkArea : MonoBehaviour
         // TODO: navigate agent to (x, y)
         agent.state = Robot.RobotState.MovingFromRecycle;
         
+        // add raw or special materials to inventory
+        if (recycledRobot.isEmergency)
+        {
+            for (int i = 0; i < Inventory.numOfSpecial; ++i)
+            {
+                Inventory.GetInventory().AddAmount(WorkType.Emergency, i, 
+                    Random.Range(Inventory.minSpecialByEmergency, Inventory.maxSpecialByEmergency));
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Inventory.numOfRaw; ++i)
+            {
+                Inventory.GetInventory().AddAmount(WorkType.Raw, i,
+                    Random.Range(Inventory.minRawByRecycle, Inventory.maxRawByRecycle));
+            }
+        }
+
+        // remove and destroy the recycled Robot
         int x = recycledRobot.x, y = recycledRobot.y;
+        Destroy(recycledRobot.gameObject);
         _robots[x, y] = null;
-        
-        // TODO: add raw or special materials to inventory
     }
     
     // ======== common ========

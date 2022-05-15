@@ -40,6 +40,7 @@ public class Robot : MonoBehaviour
     // Bind this Robot to the WorkArea it belongs, which means:
     // 1. Saving a reference of WorkArea
     // 2. Deciding the actual efficiency
+    // 3. Setting state to active and turning on MeshRenderer, because a bufferedRobot is set to sleepy.
     public void Bind(WorkArea workArea)
     {
         _workArea = workArea;
@@ -56,6 +57,10 @@ public class Robot : MonoBehaviour
                 _efficiency = productionEfficiencies[workTypeNumber];
                 break;
         }
+
+        foreach (var i in gameObject.GetComponentsInChildren<Robot>())
+            i.enabled = true;
+        state = RobotState.Active;
     }
 
     // Denotes whether it exerts debuff on adjacent robots(if exist).
