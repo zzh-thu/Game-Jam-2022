@@ -37,7 +37,6 @@ public class UITextDataFetcher : MonoBehaviour
     {
         Robot robot = null; // TODO
         var inventory = Inventory.GetInventory();
-        Debug.Log(inventory);
         switch (dataType)
         {
             case DataType.Amount:
@@ -76,19 +75,20 @@ public class UITextDataFetcher : MonoBehaviour
                 switch (workType)
                 {
                     case WorkArea.WorkType.Raw:
-                        return robot.rawEfficiencies[workTypeNum].ToString();
+                        // return robot.rawEfficiencies[workTypeNum].ToString();
                     case WorkArea.WorkType.Robot:
-                        return robot.robotEfficiency.ToString();
+                        // return robot.robotEfficiency.ToString();
                     case WorkArea.WorkType.Production:
-                        return robot.productionEfficiencies[workTypeNum].ToString();
+                        // return robot.productionEfficiencies[workTypeNum].ToString();
+                        break;
                 }
                 break;
             case DataType.RobotBoundEfficiency:
-                return robot.GetEfficiency().ToString();
+                // return robot.GetEfficiency().ToString();
             case DataType.RobotUsedTime:
-                return ((int)(robot.age)).ToString();
+                // return ((int)(robot.age)).ToString();
             case DataType.RobotPrice:
-                return robot.price.ToString();
+                // return robot.price.ToString();
             default:
                 return "";
         }

@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class UIButtonFunctions : MonoBehaviour
 {
-    public GameObject canvas1;
-    public GameObject canvas2;
+    public GameObject putRobotIcon;
     public void SellRobot()
     {
         Inventory.GetInventory().SellBufferedRobot();
@@ -27,9 +26,34 @@ public class UIButtonFunctions : MonoBehaviour
         Inventory.GetInventory().Continue();
     }
 
-    public void GoToLevelSelect()
+    public void StartPutRobot()
     {
-        canvas1.SetActive(false);
-        canvas2.SetActive(true);
+        Debug.Log("123123123123123123123123123");
+        var icon = Instantiate(putRobotIcon);
+        
+        Debug.Log("123123123123123123123123123");
+
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("inner click");
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit[] hits;
+                hits = Physics.RaycastAll(ray);
+
+                foreach (var hit in hits)
+                {
+                    if (hit.collider.GetComponent<RobotBase>())
+                    {
+                        var robot = Inventory.GetInventory().FetchBufferedRobot();
+                        robot.transform.position = hit.collider.transform.position;  // TODO
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        Destroy(icon);
     }
 }
